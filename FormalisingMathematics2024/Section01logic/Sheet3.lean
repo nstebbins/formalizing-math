@@ -32,46 +32,80 @@ and the following tactics may also be useful:
 -- Throughout this sheet, `P`, `Q` and `R` will denote propositions.
 variable (P Q R : Prop)
 
+example (P : Prop) : ¬ ¬ P → P := by
+  intro hnnP -- assume ¬ ¬ P
+  by_contra hnP -- goal is now `False`
+  apply hnnP -- goal is now ¬ P
+  exact hnP
+
 example : ¬True → False := by
-  sorry
+  intro h1
+  apply h1
+  triv
   done
 
 example : False → ¬True := by
-  sorry
+  intros h1 h2
+  exact h1
   done
 
 example : ¬False → True := by
-  sorry
+  intro h1
+  triv
   done
 
 example : True → ¬False := by
-  sorry
+  intro h1
+  by_contra h
+  exact h
   done
 
 example : False → ¬P := by
-  sorry
+  intro h1
+  intro h2
+  exact h1
   done
 
 example : P → ¬P → False := by
-  sorry
+  intros h1 h2
+  apply h2
+  exact h1
   done
 
 example : P → ¬¬P := by
-  sorry
+  intro h
+  by_contra h2
+  apply h2
+  exact h
   done
 
 example : (P → Q) → ¬Q → ¬P := by
-  sorry
+  intros h1 h2
+  by_contra h3
+  apply h1 at h3
+  apply h2 at h3
+  exact h3
   done
 
 example : ¬¬False → False := by
-  sorry
+  intros h1
+  by_contra h2
+  apply h1 at h2
+  exact h2
   done
 
 example : ¬¬P → P := by
-  sorry
+  intros h1
+  by_contra h
+  apply h1 at h
+  exact h
   done
 
 example : (¬Q → ¬P) → P → Q := by
-  sorry
+  intros h1 h2
+  change (¬Q → P → False) at h1
+  by_contra h3
+  apply h1 at h3
+  apply h3 at h2
+  exact h2
   done
