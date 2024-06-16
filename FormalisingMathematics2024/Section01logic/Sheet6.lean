@@ -27,20 +27,34 @@ and also the following tactics
 variable (P Q R S : Prop)
 
 example : P → P ∨ Q := by
-  sorry
+  intro h
+  left
+  exact h
   done
 
 example : Q → P ∨ Q := by
-  sorry
+  intro h
+  right
+  exact h
   done
 
 example : P ∨ Q → (P → R) → (Q → R) → R := by
-  sorry
+  intros h1 h2 h3
+  cases' h1 with l r
+  apply h2 at l
+  exact l
+  apply h3 at r
+  exact r
   done
 
 -- symmetry of `or`
 example : P ∨ Q → Q ∨ P := by
-  sorry
+  intro h
+  cases' h with l r
+  right
+  exact l
+  left
+  exact r
   done
 
 -- associativity of `or`

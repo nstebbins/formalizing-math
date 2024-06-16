@@ -25,35 +25,91 @@ and also the following two new tactics:
 variable (P Q R S : Prop)
 
 example : P ↔ P := by
-  sorry
+  constructor
+  intro h
+  exact h
+  intro h
+  exact h
   done
 
-example : (P ↔ Q) → (Q ↔ P) := by
-  sorry
+lemma one_way : (P ↔ Q) → (Q ↔ P) := by
+  intro h
+  rw [h]
   done
 
 example : (P ↔ Q) ↔ (Q ↔ P) := by
-  sorry
+  constructor
+  apply one_way
+  apply one_way
   done
 
 example : (P ↔ Q) → (Q ↔ R) → (P ↔ R) := by
-  sorry
+  intros h1 h2
+  rw [h1, h2]
   done
 
 example : P ∧ Q ↔ Q ∧ P := by
-  sorry
+  constructor
+  intro h
+  constructor
+  cases' h with l r
+  exact r
+  cases' h with l r
+  exact l
+  intro h
+  constructor
+  cases' h with l r
+  exact r
+  cases' h with l r
+  exact l
+  done
+
+lemma one_way_and : (P ∧ Q) ∧ R → P ∧ Q ∧ R := by
+  intro h
+  cases' h with l r
+  constructor
+  cases' l with one two
+  exact one
+  cases' l with one two
+  constructor
+  exact two
+  exact r
   done
 
 example : (P ∧ Q) ∧ R ↔ P ∧ Q ∧ R := by
-  sorry
+  constructor
+  apply one_way_and
+  intro h
+  constructor
+  cases' h with l r
+  cases' r with r2 r3
+  constructor
+  exact l
+  exact r2
+  cases' h with l r
+  cases' r with r2 r3
+  exact r3
   done
 
 example : P ↔ P ∧ True := by
-  sorry
+  constructor
+  intro h1
+  constructor
+  exact h1
+  triv
+  intro h1
+  cases' h1 with l r
+  exact l
   done
 
 example : False ↔ P ∧ False := by
-  sorry
+  constructor
+  intro h
+  by_contra h1
+  exact h
+  intro h
+  cases' h with l r
+  exact r
   done
 
 example : (P ↔ Q) → (R ↔ S) → (P ∧ R ↔ Q ∧ S) := by
