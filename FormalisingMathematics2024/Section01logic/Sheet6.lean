@@ -59,11 +59,40 @@ example : P ∨ Q → Q ∨ P := by
 
 -- associativity of `or`
 example : (P ∨ Q) ∨ R ↔ P ∨ Q ∨ R := by
-  sorry
+  constructor
+  intro h
+  cases' h with l r
+  cases' l with one two
+  left
+  exact one
+  right
+  left
+  exact two
+  right
+  right
+  exact r
+  intro h
+  cases' h with l r
+  left
+  left
+  exact l
+  cases' r with one two
+  left
+  right
+  exact one
+  right
+  exact two
   done
 
 example : (P → R) → (Q → S) → P ∨ Q → R ∨ S := by
-  sorry
+  intros h1 h2 h3
+  cases' h3 with l r
+  apply h1 at l
+  left
+  exact l
+  apply h2 at r
+  right
+  exact r
   done
 
 example : (P → Q) → P ∨ R → Q ∨ R := by
@@ -76,7 +105,25 @@ example : (P ↔ R) → (Q ↔ S) → (P ∨ Q ↔ R ∨ S) := by
 
 -- de Morgan's laws
 example : ¬(P ∨ Q) ↔ ¬P ∧ ¬Q := by
-  sorry
+  constructor
+  intro h
+  constructor
+  by_contra h2
+  apply h
+  left
+  exact h2
+  by_contra h2
+  apply h
+  right
+  exact h2
+  intro h
+  by_contra h2
+  cases' h with one two
+  cases' h2 with three four
+  apply one at three
+  exact three
+  apply two at four
+  exact four
   done
 
 example : ¬(P ∧ Q) ↔ ¬P ∨ ¬Q := by

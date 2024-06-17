@@ -22,7 +22,7 @@ knows that the real numbers are a ring. See if you can use
 -/
 
 example (x y : ℝ) : (x + y) ^ 2 = x ^ 2 + 2 * x * y + y ^ 2 := by
-  sorry
+  ring
   done
 
 example : ∀ a b : ℝ, ∃ x, (a + b) ^ 3 = a ^ 3 + x * a ^ 2 * b + 3 * a * b ^ 2 + b ^ 3 := by
@@ -30,13 +30,20 @@ example : ∀ a b : ℝ, ∃ x, (a + b) ^ 3 = a ^ 3 + x * a ^ 2 * b + 3 * a * b 
   done
 
 example : ∃ x : ℝ, ∀ y, y + y = x * y := by
-  sorry
+  use 2
+  intro x
+  ring
   done
 
 example : ∀ x : ℝ, ∃ y, x + y = 2 := by
-  sorry
+  intro z
+  use (2 - z)
+  ring
   done
 
 example : ∀ x : ℝ, ∃ y, x + y ≠ 2 := by
-  sorry
+  intro z
+  use (3 - z)
+  ring
+  norm_num
   done
