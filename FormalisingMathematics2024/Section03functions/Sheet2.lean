@@ -88,6 +88,25 @@ def f : X → ℕ
 example : f a = 37 := by-- true by definition
   rfl
 
+example : Function.Injective f := by
+  rw [Function.Injective]
+  intros a1 a2
+  intro h
+  cases' a1
+  cases' a2
+  rfl
+  cases h
+  cases h
+  cases' a2
+  cases h
+  rfl
+  cases h
+  cases' a2
+  cases h
+  cases h
+  rfl
+  done
+
 -- Here is a proof that `f` is an injective function.
 -- At some point in this proof there are 9 goals; you can see them
 -- by changing the `;` after `cases y` to a `,`. The <;> means

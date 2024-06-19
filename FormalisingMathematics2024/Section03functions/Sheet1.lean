@@ -72,13 +72,36 @@ theorem comp_eval (f : X → Y) (g : Y → Z) (x : X) : (g ∘ f) x = g (f x) :=
 -- saying "it's true by definition"? Because now, if we want,
 -- we can `rw` the theorems to replace things by their definitions.
 example : Injective (id : X → X) :=
-  by-- you can start with `rw injective_def` if you like,
-  -- and later you can `rw id_eval`, although remember that `rw` doesn't
-  -- work under binders like `∀`, so use `intro` first.
-  sorry
+  by
+  rw [injective_def]
+  intros a b
+  repeat rw [id_eval]
+  intro h
+  exact h
+  done
 
 example : Surjective (id : X → X) := by
-  sorry
+  rw [surjective_def]
+  intro h
+  use h
+  rw [id_eval]
+  done
+
+example (f : X → Y) (g : Y → Z) (hf : Injective f) (hg : Injective g) : Injective (g ∘ f) :=
+  by
+  rw [injective_def]
+  rw [injective_def] at hf
+  rw [injective_def] at hg
+  intros a b
+  specialize hf a b
+  intro h
+  rw [comp_eval] at h
+  rw [comp_eval] at h
+  apply hf
+  specialize hg (f a) (f b)
+  apply hg
+  exact h
+  done
 
 -- Theorem: if f : X → Y and g : Y → Z are injective,
 -- then so is g ∘ f
@@ -98,6 +121,20 @@ example (f : X → Y) (g : Y → Z) (hf : Injective f) (hg : Injective g) : Inje
   apply hf at h
   -- Now the goal is exactly our hypothesis `h`
   exact h
+
+example (f : X → Y) (g : Y → Z) (hf : Surjective f) (hg : Surjective g) : Surjective (g ∘ f) :=
+  by
+  rw [surjective_def] at *
+  intro b
+  specialize hg b
+  cases' hg with a hg
+  specialize hf a
+  cases' hf with a1 hf
+  use a1
+  rw [comp_eval]
+  rw [hf]
+  rw [hg]
+  done
 
 -- Theorem: composite of two surjective functions
 -- is surjective.
@@ -129,10 +166,26 @@ example (f : X → Y) (g : Y → Z) (hf : Surjective f) (hg : Surjective g) : Su
 
 -- This is a question on the IUM (Imperial introduction to proof course) function problem sheet
 example (f : X → Y) (g : Y → Z) : Injective (g ∘ f) → Injective f := by
-  sorry
+  intro h
+  rw [injective_def] at *
+  intros a b
+  specialize h a b
+  intro h2
+  apply h
+  repeat rw [comp_eval]
+  rw [h2]
+  done
 
 -- This is another one
 example (f : X → Y) (g : Y → Z) : Surjective (g ∘ f) → Surjective g := by
-  sorry
+  intro h
+  rw [surjective_def] at *
+  intro b
+  specialize h b
+  cases' h with a1 h
+  rw [comp_eval] at h
+  use (f a1)
+  done
+
 
 end Section3sheet1

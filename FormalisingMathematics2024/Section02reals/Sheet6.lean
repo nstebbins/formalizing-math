@@ -51,8 +51,25 @@ theorem tendsTo_thirtyseven_mul (a : ℕ → ℝ) (t : ℝ) (h : TendsTo a t) :
 `c * a(n)` tends to `c * t`. -/
 theorem tendsTo_pos_const_mul {a : ℕ → ℝ} {t : ℝ} (h : TendsTo a t) {c : ℝ} (hc : 0 < c) :
     TendsTo (fun n ↦ c * a n) (c * t) := by
-  sorry
+  rw [tendsTo_def] at h
+  rw [tendsTo_def]
+  intro eps
+  specialize h (eps/c)
+  intro h2
+  specialize h h2
+  cases' h with b h
+  use b
+  intro h3
+  intro h4
+  specialize h h3
+  specialize h h4
+  rw [abs_lt] at *
+  cases' h with l r
+  constructor
+  sorry -- TODO come back to this
   done
+
+
 
 /-- If `a(n)` tends to `t` and `c` is a negative constant then
 `c * a(n)` tends to `c * t`. -/
@@ -81,6 +98,19 @@ theorem tendsTo_neg' {a : ℕ → ℝ} {t : ℝ} (ha : TendsTo a t) : TendsTo (f
 theorem tendsTo_of_tendsTo_sub {a b : ℕ → ℝ} {t u : ℝ} (h1 : TendsTo (fun n ↦ a n - b n) t)
     (h2 : TendsTo b u) : TendsTo a (t + u) := by
   sorry
+
+theorem tendsTo_sub_lim {a : ℕ → ℝ} {t : ℝ} (h: TendsTo a t ) : TendsTo (fun n ↦ a n - t) 0 := by
+  rw [tendsTo_def] at h
+  rw [tendsTo_def]
+  intros eps h2
+  specialize h eps
+  specialize h h2
+  cases' h with B hB
+  use B
+  intro n
+  specialize hB n
+  norm_num
+  exact hB
 
 /-- If `a(n)` tends to `t` then `a(n)-t` tends to `0`. -/
 theorem tendsTo_sub_lim_iff {a : ℕ → ℝ} {t : ℝ} : TendsTo a t ↔ TendsTo (fun n ↦ a n - t) 0 := by
