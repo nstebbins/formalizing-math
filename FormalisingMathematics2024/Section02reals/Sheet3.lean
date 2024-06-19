@@ -77,22 +77,23 @@ but it can't do anything with it if it's a variable.
 theorem tendsTo_thirtyseven : TendsTo (fun n ↦ 37) 37 :=
   by
   rw [tendsTo_def]
-  intro ε hε
-  use 100
-  intro n hn
+  intros e h2
+  use 0
+  intros n h3
   norm_num
-  exact hε
+  exact h2
+  done
 
 /-- The limit of the constant sequence with value `c` is `c`. -/
 theorem tendsTo_const (c : ℝ) : TendsTo (fun n ↦ c) c :=
   by
-  intro ε hε
-  dsimp only
-  use 37
-  intro n hn
-  ring_nf
+  rw [tendsTo_def]
+  intros e h2
+  use 0
+  intros n h3
   norm_num
-  exact hε
+  exact h_2
+  done
 
 /-- If `a(n)` tends to `t` then `a(n) + c` tends to `t + c` -/
 theorem tendsTo_add_const {a : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo a t) :
@@ -104,7 +105,26 @@ theorem tendsTo_add_const {a : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo a t
   -- a `forall` hypothesis to specific values.
   -- Look up the explanations of these tactics in Part C
   -- of the course notes.  rw [tendsTo_def] at h ⊢
-  sorry
+  rw [tendsTo_def] at h
+  rw [tendsTo_def]
+  intro e
+  specialize h e
+  intro h_2
+  apply h at h_2
+  cases' h_2 with B hB
+  use B
+  intro n
+  intro h_2
+  norm_num
+  specialize hB n
+  apply hB at h_2
+  exact h_2
+  done
+
+
+
+
+
 
 -- you're not quite ready for this one yet though.
 /-- If `a(n)` tends to `t` then `-a(n)` tends to `-t`.  -/

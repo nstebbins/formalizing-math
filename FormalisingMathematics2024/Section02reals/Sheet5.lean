@@ -31,31 +31,33 @@ tends to `t + u`. -/
 theorem tendsTo_add {a b : ℕ → ℝ} {t u : ℝ} (ha : TendsTo a t) (hb : TendsTo b u) :
     TendsTo (fun n ↦ a n + b n) (t + u) :=
   by
-  rw [tendsTo_def] at *
-  -- let ε > 0 be arbitrary
-  intro ε hε
-  --  There's a bound X such that if n≥X then a(n) is within ε/2 of t
-  specialize ha (ε / 2) (by linarith)
-  cases' ha with X hX
-  --  There's a bound Y such that if n≥Y then b(n) is within ε/2 of u
-  obtain ⟨Y, hY⟩ := hb (ε / 2) (by linarith)
-  --  use max(X,Y),
-  use max X Y
-  -- now say n ≥ max(X,Y)
-  intro n hn
-  rw [max_le_iff] at hn
-  specialize hX n hn.1
-  specialize hY n hn.2
-  --  Then easy.
+  rw [tendsTo_def]; rw [tendsTo_def] at ha; rw [tendsTo_def] at hb;
+  intro epsilon
+  specialize ha (epsilon/2)
+  specialize hb (epsilon/2)
+  intro h
+  specialize ha h
+  specialize hb h
+  cases' ha with a_val ha
+  cases' hb with b_val hb
+  use max a_val b_val
+  intros h2 h3
+  specialize ha h2
+  specialize hb h2
+  specialize ha h3
+  specialize hb h3
   rw [abs_lt] at *
-  constructor <;>-- `<;>` means "do next tactic to all goals produced by this tactic"
-    linarith
+  constructor <;> linarith
+  done
+
 
 /-- If `a(n)` tends to t and `b(n)` tends to `u` then `a(n) - b(n)`
 tends to `t - u`. -/
 theorem tendsTo_sub {a b : ℕ → ℝ} {t u : ℝ} (ha : TendsTo a t) (hb : TendsTo b u) :
     TendsTo (fun n ↦ a n - b n) (t - u) := by
   -- this one follows without too much trouble from earlier results.
-  sorry
+  apply tendsTo_neg at hb
+  apply tendsTo_add ha hb
+  done
 
 end Section2sheet5
