@@ -79,15 +79,54 @@ Let's prove some theorems.
 
 -/
 
-example : A ⊆ A := by sorry
+example : A ⊆ A := by
+  rw [subset_def]
+  intro x1 h
+  exact h
+  done
 
-example : A ⊆ B → B ⊆ C → A ⊆ C := by sorry
+example : A ⊆ B → B ⊆ C → A ⊆ C := by
+  intro h1 h2
+  rw [subset_def] at *
+  intro x1
+  specialize h1 x1
+  intro h3
+  specialize h1 h3
+  specialize h2 x1
+  apply h2
+  exact h1
+  done
 
-example : A ⊆ A ∪ B := by sorry
+example : A ⊆ A ∪ B := by
+  rw [subset_def]
+  intros x1 h
+  rw [mem_union_iff]
+  left
+  exact h
+  done
 
-example : A ∩ B ⊆ A := by sorry
+example : A ∩ B ⊆ A := by
+  rw [subset_def]
+  intros x1 h1
+  rw [mem_inter_iff] at h1
+  cases' h1 with l r
+  exact l
+  done
 
-example : A ⊆ B → A ⊆ C → A ⊆ B ∩ C := by sorry
+example : A ⊆ B → A ⊆ C → A ⊆ B ∩ C := by
+  intros h1 h2
+  rw [subset_def] at *
+  intro x1
+  specialize h1 x1
+  specialize h2 x1
+  intro h3
+  specialize h1 h3
+  specialize h2 h3
+  rw [mem_inter_iff]
+  constructor
+  exact h1
+  exact h2
+  done
 
 example : B ⊆ A → C ⊆ A → B ∪ C ⊆ A := by sorry
 
