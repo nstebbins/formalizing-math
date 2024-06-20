@@ -35,9 +35,29 @@ variable (X : Type)
   (x y z : X)
 
 -- x,y,z are elements of `X` or, more precisely, terms of type `X`
-example : A ∪ A = A := by sorry
+example : A ∪ A = A := by
+  ext x1
+  constructor
+  intro h
+  cases' h with l r
+  exact l
+  exact r
+  intro h
+  constructor
+  exact h
+  done
 
-example : A ∩ A = A := by sorry
+example : A ∩ A = A := by
+  ext x1
+  constructor
+  intros h1
+  cases' h1 with l r
+  exact l
+  intro h1
+  constructor
+  exact h1
+  exact h1
+  done
 
 example : A ∩ ∅ = ∅ := by sorry
 
