@@ -128,8 +128,44 @@ example : A ⊆ B → A ⊆ C → A ⊆ B ∩ C := by
   exact h2
   done
 
-example : B ⊆ A → C ⊆ A → B ∪ C ⊆ A := by sorry
+example : B ⊆ A → C ⊆ A → B ∪ C ⊆ A := by
+  intros h1 h2
+  rw [subset_def] at *
+  intros x1 h3
+  specialize h1 x1
+  specialize h2 x1
+  cases' h3 with l r
+  apply h1
+  exact l
+  apply h2
+  exact r
+  done
 
-example : A ⊆ B → C ⊆ D → A ∪ C ⊆ B ∪ D := by sorry
+example : A ⊆ B → C ⊆ D → A ∪ C ⊆ B ∪ D := by
+  intros h1 h2
+  rw [subset_def] at *
+  intros x1 h3
+  specialize h1 x1
+  specialize h2 x1
+  cases' h3 with l r
+  left
+  apply h1
+  exact l
+  right
+  apply h2
+  exact r
+  done
 
-example : A ⊆ B → C ⊆ D → A ∩ C ⊆ B ∩ D := by sorry
+example : A ⊆ B → C ⊆ D → A ∩ C ⊆ B ∩ D := by
+  intros h1 h2
+  rw [subset_def] at *
+  intros x1 h3
+  specialize h1 x1
+  specialize h2 x1
+  cases' h3 with l r
+  constructor
+  apply h1
+  exact l
+  apply h2
+  exact r
+  done
