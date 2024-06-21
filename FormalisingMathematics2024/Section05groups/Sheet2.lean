@@ -53,7 +53,16 @@ first.
 
 -/
 
-theorem mul_left_cancel (h : a * b = a * c) : b = c := by sorry
+theorem mul_left_cancel (h : a * b = a * c) : b = c := by
+  -- We can use `mul_assoc` to rewrite the left hand side of `h`
+  rw [← one_mul b]
+  rw [← inv_mul_self a]
+  rw [mul_assoc]
+  rw [h]
+  rw [← mul_assoc]
+  rw [inv_mul_self]
+  rw [one_mul]
+  done
 
 theorem mul_eq_of_eq_inv_mul (h : b = a⁻¹ * c) : a * b = c := by sorry
 

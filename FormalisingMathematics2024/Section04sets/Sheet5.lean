@@ -59,18 +59,108 @@ example : A ∩ A = A := by
   exact h1
   done
 
-example : A ∩ ∅ = ∅ := by sorry
+example : A ∩ ∅ = ∅ := by
+  ext x1
+  constructor
+  intros h
+  cases' h with l r
+  exact r
+  intro h1
+  constructor
+  cases h1
+  exact h1
+  done
 
-example : A ∪ univ = univ := by sorry
+example : A ∪ univ = univ := by
+  ext x1
+  constructor
+  intro h
+  triv
+  intro h
+  right
+  triv
+  done
 
-example : A ⊆ B → B ⊆ A → A = B := by sorry
 
-example : A ∩ B = B ∩ A := by sorry
+example : A ⊆ B → B ⊆ A → A = B := by
+  intros h1 h2
+  rw [subset_def] at *
+  ext x1
+  constructor
+  intros h3
+  specialize h1 x1
+  specialize h2 x1
+  apply h1
+  exact h3
+  intro h3
+  specialize h1 x1
+  specialize h2 x1
+  apply h2
+  exact h3
+  done
 
-example : A ∩ (B ∩ C) = A ∩ B ∩ C := by sorry
+
+example : A ∩ B = B ∩ A := by
+  ext x1
+  constructor
+  intros h1
+  cases' h1 with l r
+  constructor
+  exact r
+  exact l
+  intros h1
+  cases' h1 with l r
+  constructor
+  exact r
+  exact l
+  done
+
+example : A ∩ (B ∩ C) = A ∩ B ∩ C := by
+  ext x1
+  constructor
+  intros h1
+  cases' h1 with l r
+  cases' r with r1 r2
+  constructor
+  constructor
+  exact l; exact r1; exact r2;
+  intros h1
+  cases' h1 with l r
+  cases' l with r1 r2
+  constructor
+  exact r1
+  constructor
+  exact r2
+  exact r
+  done
 
 example : A ∪ (B ∪ C) = A ∪ B ∪ C := by sorry
 
 example : A ∪ B ∩ C = (A ∪ B) ∩ (A ∪ C) := by sorry
 
-example : A ∩ (B ∪ C) = A ∩ B ∪ A ∩ C := by sorry
+example : A ∩ (B ∪ C) = A ∩ B ∪ A ∩ C := by
+  ext x1
+  constructor
+  intros h1
+  cases' h1 with l r
+  cases' r with one two
+  left
+  constructor
+  exact l; exact one;
+  right
+  constructor
+  exact l; exact two;
+  intros h1
+  constructor
+  cases' h1 with one two
+  cases' one with l r
+  exact l
+  cases' two with l r
+  exact l
+  cases' h1 with one two
+  left
+  cases' one with l r
+  exact r
+  cases' two with l r
+  right
+  exact r

@@ -38,7 +38,14 @@ for group theory. In Lean we use the notation `f ⁻¹' T` for this pullback.
 
 variable (X Y : Type) (f : X → Y) (S : Set X) (T : Set Y)
 
-example : S ⊆ f ⁻¹' (f '' S) := by sorry
+theorem mem_def (X : Type) (P : X → Prop) (a : X) :
+    a ∈ {x : X | P x} ↔ P a := by
+  rfl
+
+example : S ⊆ f ⁻¹' (f '' S) := by
+  intros a hx
+  sorry -- TODO stuck
+
 
 example : f '' (f ⁻¹' T) ⊆ T := by sorry
 
@@ -50,7 +57,11 @@ example : f '' S ⊆ T ↔ S ⊆ f ⁻¹' T := by sorry
 example : id ⁻¹' S = S := by sorry
 
 -- pushforward is a little trickier. You might have to `ext x, split`.
-example : id '' S = S := by sorry
+example : id '' S = S := by
+  ext x1
+  constructor
+  intro h1
+  sorry -- TODO figure out how to proceed
 
 -- Now let's try composition.
 variable (Z : Type) (g : Y → Z) (U : Set Z)
