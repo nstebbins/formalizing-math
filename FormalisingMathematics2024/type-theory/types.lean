@@ -28,6 +28,7 @@ def y : ℕ := 5  -- explicit type
 def z := (x, y)
 
 #check z
+#check 4
 
 def addTwo(x: ℕ × ℕ): ℕ := x.1 + x.2
 

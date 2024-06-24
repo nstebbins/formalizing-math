@@ -4,10 +4,15 @@ namespace TestProps
 
 variable (a p q: Prop)
 
-theorem one: p → p :=
+theorem impl: p → p :=
   fun (hp: p) => hp
 
-#print one
+theorem impl_tactic: p → p := by
+  intro h
+  exact h
+  done
+
+#print impl
 
 theorem modus_ponens_f (hp: p)(hq: q): p :=
   hp
