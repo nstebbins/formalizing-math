@@ -94,7 +94,6 @@ example {a b c : G} (h1 : b * a = 1) (h2 : a * c = 1) : b = c := by
   rw [mul_assoc]
   done
 
-
 example : a * b = 1 ↔ a⁻¹ = b := by
   constructor
   intro h
@@ -103,16 +102,42 @@ example : a * b = 1 ↔ a⁻¹ = b := by
   rw [← mul_assoc]
   rw [inv_mul_self]
   rw [one_mul]
-  done
+  sorry
+
+theorem cancellation_law : a * b = a * c → b = c := by
+  intro h
+  rw [← one_mul b]
+  rw [← inv_mul_self a]
+  rw [mul_assoc]
+  rw [h]
+  rw [← mul_assoc]
+  rw [inv_mul_self]
+  rw [one_mul]
+
+theorem inv_eq_of_mul (h : a * b = 1) : a⁻¹ = b := by
+  rw [← mul_inv_self a] at h
+  apply cancellation_law at h
+  symm
+  exact h
 
 example : (1 : G)⁻¹ = 1 := by
-  sorry
+  apply inv_eq_of_mul
+  rw [one_mul]
 
 example : a⁻¹⁻¹ = a := by
-  sorry
+  have : a⁻¹ * a⁻¹⁻¹ = a⁻¹ * a := by
+    rw [mul_left_inv]
+    rw [mul_right_inv]
+  apply cancellation_law at this
+  exact this
 
 example : (a * b)⁻¹ = b⁻¹ * a⁻¹ := by
-  sorry
+  apply inv_eq_of_mul
+  rw [mul_assoc]
+  rw [← mul_assoc b]
+  rw [mul_inv_self b]
+  rw [one_mul]
+  rw [mul_inv_self a]
 
 /-
 

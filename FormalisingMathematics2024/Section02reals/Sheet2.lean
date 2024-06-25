@@ -30,10 +30,11 @@ example : ∀ a b : ℝ, ∃ x, (a + b) ^ 3 = a ^ 3 + x * a ^ 2 * b + 3 * a * b 
   done
 
 example : ∃ x : ℝ, ∀ y, y + y = x * y := by
+  have : ∀ (y: ℝ), y + y = 2 * y := by
+    intro y
+    ring
   use 2
-  intro x
-  ring
-  done
+
 
 example : ∀ x : ℝ, ∃ y, x + y = 2 := by
   intro z

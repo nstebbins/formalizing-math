@@ -64,11 +64,27 @@ theorem mul_left_cancel (h : a * b = a * c) : b = c := by
   rw [one_mul]
   done
 
-theorem mul_eq_of_eq_inv_mul (h : b = a⁻¹ * c) : a * b = c := by sorry
+#check mul_left_cancel
 
-theorem mul_one (a : G) : a * 1 = a := by sorry
+theorem mul_eq_of_eq_inv_mul (h : b = a⁻¹ * c) : a * b = c := by
+  have : a⁻¹ * a * b = a⁻¹ * c := by
+    rw [inv_mul_self]
+    rw [one_mul]
+    exact h
+  rw [mul_assoc] at this
+  apply mul_left_cancel (a⁻¹) (a * b) c at this
+  exact this
 
-theorem mul_inv_self (a : G) : a * a⁻¹ = 1 := by sorry
+#check mul_eq_of_eq_inv_mul
+
+theorem mul_one (a : G) : a * 1 = a := by
+  apply mul_eq_of_eq_inv_mul a 1 a
+  rw [inv_mul_self a]
+
+theorem mul_inv_self (a : G) : a * a⁻¹ = 1 := by
+  apply mul_eq_of_eq_inv_mul a (a⁻¹) 1
+  rw [mul_one]
+
 
 end WeakGroup
 
