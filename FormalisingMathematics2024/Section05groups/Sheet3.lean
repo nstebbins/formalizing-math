@@ -37,7 +37,16 @@ example (a b : G) (ha : a ∈ H) (hb : b ∈ H) : a * b ∈ H := by
 
 example (a b c : G) (ha : a ∈ H) (hb : b ∈ H) (hc : c ∈ H) :
     a * b⁻¹ * 1 * (a * c) ∈ H := by
-  sorry
+  apply H.mul_mem
+  apply H.mul_mem
+  apply H.mul_mem
+  exact ha
+  apply H.inv_mem
+  exact hb
+  apply H.one_mem
+  apply H.mul_mem
+  exact ha
+  exact hc
 
 /-
 
