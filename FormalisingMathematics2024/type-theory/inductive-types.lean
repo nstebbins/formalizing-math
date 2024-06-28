@@ -6,6 +6,20 @@ inductive Prod (α: Type*) where
 | a : α
 | b : α
 
+inductive Weekday where
+| monday : Weekday
+| tuesday : Weekday
+| wednesday : Weekday
+| thursday : Weekday
+| friday : Weekday
+| saturday : Weekday
+| sunday : Weekday
+deriving Repr
+
+open Weekday
+
+#check Weekday.friday
+
 #eval Prod.mk 1 2
 -- Prod.a is not a thing for inductive types
 
@@ -41,5 +55,93 @@ example (r: ProdStructure Nat)(s: ProdStructure Nat): r.add s = s.add r := by
   rw [h₁, h₂]
   rw [h₀]
   sorry  -- rfl doesn't work here :/
+
+open Weekday
+
+def numberOfDay (d : Weekday) : Nat :=
+  match d with
+  | sunday    => 1
+  | monday    => 2
+  | tuesday   => 3
+  | wednesday => 4
+  | thursday  => 5
+  | friday    => 6
+  | saturday  => 7
+
+set_option pp.all true
+
+#print numberOfDay
+-- ... numberOfDay.match_1
+#print numberOfDay.match_1
+-- ... Weekday.casesOn ...
+#print Weekday.casesOn
+-- ... Weekday.rec ...
+#check @Weekday.rec
+
+def next (d : Weekday) : Weekday :=
+  match d with
+  | sunday    => monday
+  | monday    => tuesday
+  | tuesday   => wednesday
+  | wednesday => thursday
+  | thursday  => friday
+  | friday    => saturday
+  | saturday  => sunday
+
+def previous (d : Weekday) : Weekday :=
+  match d with
+  | sunday    => saturday
+  | monday    => sunday
+  | tuesday   => monday
+  | wednesday => tuesday
+  | thursday  => wednesday
+  | friday    => thursday
+  | saturday  => friday
+
+lemma next_previous (d : Weekday) : next (previous d) = d := by
+  cases d <;> rfl
+
+#eval previous monday
+
+inductive Bool where
+| f : Bool
+| t : Bool
+deriving Repr
+
+open Bool
+
+def and(a b: Bool): Bool :=
+  match a with
+  | t => b
+  | f => f
+
+def neg(a: Bool): Bool :=
+  match a with
+  | t => f
+  | f => t
+
+#eval and t f  -- Hidden.Bool.f
+#eval and f f  -- Hidden.Bool.f
+#eval neg t    -- Hidden.Bool.f
+#eval neg f    -- Hidden.Bool.t
+
+inductive Maybe (α : Type) where
+| none : Maybe α
+| some : α → Maybe α
+deriving Repr
+
+def exampleMaybe : Maybe Nat := Maybe.some 5
+def exampleMaybeNone : Maybe Nat := Maybe.none
+
+#eval exampleMaybe  -- Hidden.Maybe.some 5
+#eval exampleMaybeNone  -- Hidden.Maybe.none
+
+def isNone(m: Maybe Nat) :=
+  match m with
+  | Maybe.none => t
+  | Maybe.some _ => f
+
+#eval isNone exampleMaybe
+#eval isNone exampleMaybeNone
 
 end Hidden

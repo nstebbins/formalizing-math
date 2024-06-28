@@ -32,6 +32,9 @@ def z := (x, y)
 
 def addTwo(x: ℕ × ℕ): ℕ := x.1 + x.2
 
+#eval addTwo z  -- 9
+#eval addTwo (4, 14) -- 18
+
 #reduce addTwo z
 
 -- lambda functions
