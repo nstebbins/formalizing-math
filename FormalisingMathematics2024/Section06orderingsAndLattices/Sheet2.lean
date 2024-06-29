@@ -84,17 +84,49 @@ variable (L : Type) [Lattice L] (a b c : L)
 example : a ⊔ b = b ⊔ a := by
   -- you might want to start with `apply le_antisymm` (every lattice is a partial order so this is OK)
   -- You'll then have two goals so use `\.` and indent two spaces.
-  sorry
+  apply le_antisymm
+  apply sup_le
+  exact le_sup_right
+  exact le_sup_left
+  apply sup_le
+  exact le_sup_right
+  exact le_sup_left
+
+/-
+`a ⊔ b` is the least upper bound of `a` and `b`:
+`le_sup_left : a ≤ a ⊔ b`
+`le_sup_right : b ≤ a ⊔ b` -- these axioms say that `a ⊔ b` is an upper bound for `{a,b}`
+`sup_le : a ≤ c → b ≤ c → a ⊔ b ≤ c` -- this says it's the least upper bound.
+-/
 
 example : a ⊔ b ⊔ c = a ⊔ (b ⊔ c) := by
-  sorry
+  apply le_antisymm
+  repeat apply sup_le
+  exact le_sup_left
+  have one : b ≤ b ⊔ c := by
+    exact le_sup_left
+  have two : b ⊔ c ≤ a ⊔ (b ⊔ c) := by
+    exact le_sup_right
+  exact le_trans one two
+  sorry  -- can prove the remaining goals in similar fashion
+
+/-
+`a ⊓ b` is the greatest lower bound of `a` and `b`:
+`inf_le_left : a ⊓ b ≤ a`
+`inf_le_right : a ⊓ b ≤ b` -- `a ⊓ b` is a lower bound
+`le_inf : a ≤ b → a ≤ c → a ≤ b ⊓ c` -- it's the greatest lower bound
+-/
 
 -- could golf this entire proof into one (long) line
 -- `a ⊓ _` preserves `≤`.
 -- Note: this is called `inf_le_inf_left a h` in mathlib; see if you can prove it
 -- directly without using this.
 example (h : b ≤ c) : a ⊓ b ≤ a ⊓ c := by
-  sorry
+  apply le_inf
+  exact inf_le_left
+  have : a ⊓ b ≤ b := by
+    exact inf_le_right
+  exact inf_le_of_right_le h
 
 /-
 
