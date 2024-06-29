@@ -145,3 +145,74 @@ def isNone(m: Maybe Nat) :=
 #eval isNone exampleMaybeNone
 
 end Hidden
+
+example (p : Nat → Prop) (hz : p 0) (hs : ∀ n, p (Nat.succ n)) : ∀ n, p n := by
+  intro n
+  cases n
+  . exact hz
+  . apply hs
+
+open Nat
+
+example (n : Nat) (h : n ≠ 0) : succ (pred n) = n := by
+  cases n with
+  | zero => exact absurd rfl h
+  | succ k => rfl
+
+example (x y z w : Nat) (h₁ : x = y) (h₂ : y = z) (h₃ : z = w) : x = w := by
+  rw [← h₃]  -- x = z
+  rw [← h₂]  -- x = y
+  assumption
+
+lemma a (p q r: Prop)(hp: p)(hq: q)(hr: r): p ∧ (q ∧ r) := by
+  sorry
+
+#check a
+
+#check test
+
+universe u v
+
+structure MyStruct where
+    {α : Type u}
+    {β : Type v}
+    a : α
+    b : β
+
+structure MyStruct2 (α: Type u)(β: Type v) where
+    a : α
+    b : β
+
+structure MyStruct3 (α: Type u) where
+  a : α
+  b : α
+
+#check { a := 10, b := true : MyStruct }
+-- #check { a := 10, b := true : MyStruct2 } -- type-related error
+#check { a := 10, b := true : MyStruct2 Nat Bool }
+#check { a := 10, b := 11 : MyStruct3 Nat }
+
+structure Point where
+x : Nat
+y : Nat
+deriving Repr
+
+structure RGB (α: Type u) where
+  red: α
+  green: α
+  blue: α
+  deriving Repr
+
+structure RGBY (α: Type u) extends RGB α where
+  yellow: α
+  deriving Repr
+
+def rgb1: RGB Nat := RGB.mk 1 2 3
+-- def rgb2: RGBY Nat := RGBY.mk 1 2 3 4  -- type-related error
+def rgb3 : RGBY Nat :=
+{ red := 1, green := 2, blue := 3, yellow := 4}
+
+#print rgb1
+#print rgb3
+#eval rgb3.red
+#eval rgb3.yellow
