@@ -77,7 +77,10 @@ example (H K : Subgroup G) (a : G) : a ∈ H ⊓ K ↔ a ∈ H ∧ a ∈ K := by
 -- Note that `a ∈ H ⊔ K ↔ a ∈ H ∨ a ∈ K` is not true; only `←` is true.
 -- Take apart the `Or` and use `exact?` to find the relevant lemmas.
 example (H K : Subgroup G) (a : G) : a ∈ H ∨ a ∈ K → a ∈ H ⊔ K := by
-  sorry
+  intros h
+  cases' h with l r
+  exact Subgroup.mem_sup_left l
+  exact Subgroup.mem_sup_right r
 
 end Subgroups
 
@@ -106,13 +109,16 @@ example (a b : G) : φ (a * b⁻¹ * 1) = φ a * (φ b)⁻¹ * 1 := by
   -- if `φ.map_mul` means that `φ` preserves multiplication
   -- (and you can rewrite with this) then what do you think
   -- the lemmas that `φ` preserves inverse and one are called?
-  sorry
+  repeat rw [φ.map_mul]
+  rw [φ.map_one]
+  rw [φ.map_inv]
 
 -- Group homomorphisms are extensional: if two group homomorphisms
 -- are equal on all inputs the they're the same.
 
 example (φ ψ : G →* H) (h : ∀ g : G, φ g = ψ g) : φ = ψ := by
   -- Use the `ext` tactic.
-  sorry
+  ext x1
+  exact h x1
 
 end Homomorphisms

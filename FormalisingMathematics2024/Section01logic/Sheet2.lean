@@ -28,6 +28,12 @@ if you can understand what's going on.
 variable (P Q R : Prop)
 
 example (P Q : Prop) : (P ∧ ¬ P) → Q := by
+  intros h₁
+  exfalso
+  sorry
+  done
+
+example (P Q : Prop) : (P ∧ ¬ P) → Q := by
   intro h
   exfalso
   apply h.right

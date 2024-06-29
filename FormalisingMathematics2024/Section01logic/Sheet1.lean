@@ -210,8 +210,12 @@ example : (P → Q) → ((P → Q) → P) → Q := by
   done
 
 example : ((P → Q) → R) → ((Q → R) → P) → ((R → P) → Q) → P := by
-  sorry
-  done
+  intros h₁ h₂ h₃
+  apply h₂
+  intros h₄
+  apply h₁
+  intros _
+  assumption
 
 example : ((Q → P) → P) → (Q → R) → (R → P) → P := by
   sorry
