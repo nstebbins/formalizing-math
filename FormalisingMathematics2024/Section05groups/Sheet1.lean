@@ -85,6 +85,9 @@ example : a * (a⁻¹ * b) = b := by
   rw [one_mul]
   done
 
+example : a * (a⁻¹ * b) = b := by
+  simp
+
 example {a b c : G} (h1 : b * a = 1) (h2 : a * c = 1) : b = c := by
   -- hint for this one if you're doing it from first principles: `b * (a * c) = (b * a) * c`
   rw [← mul_one b]
